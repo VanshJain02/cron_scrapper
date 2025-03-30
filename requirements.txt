@@ -1,0 +1,7 @@
+playwright
+bs4
+sentence-transformers
+google-cloud-firestore
+pytz
+asyncio
+firebase-admin
