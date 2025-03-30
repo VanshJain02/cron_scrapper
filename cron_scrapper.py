@@ -7,12 +7,19 @@ from google.cloud import firestore
 from linkedin_scrapper import scrape_linkedin_jobs, convert_posted_time_to_datetime, format_posted_time_local  # Reuse your defined scraper logic
 import os
 from google.cloud import firestore
-
+import base64
+import json
 # Add this before initializing Firestore client
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/Users/vansh/Desktop/resume_builder/backend/job_scrapper/firebase-service-account.json"
+firebase_json_base64 = os.environ["FIREBASE_CREDENTIALS"]
+firebase_json = base64.b64decode(firebase_json_base64).decode("utf-8")
+
+with open("firebase_creds.json", "w") as f:
+    f.write(firebase_json)
+
+# Set the environment variable for Firestore client
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "firebase_creds.json"
 
 firestore_client = firestore.Client()
-
 
 # Define your target queries and role type filters
 JOB_QUERIES = [[
