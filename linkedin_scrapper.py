@@ -90,16 +90,9 @@
 
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
-from sentence_transformers import SentenceTransformer, util
 import json
 
-embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
-async def is_semantically_relevant(job_title, target_titles, threshold=0.7):
-    job_emb = embedder.encode(job_title, convert_to_tensor=True)
-    target_embs = embedder.encode(target_titles, convert_to_tensor=True)
-    sim_scores = util.cos_sim(job_emb, target_embs)
-    return sim_scores.max().item() >= threshold
 
 def categorize_job_type(title: str, description: str = ""):
     # combined = (title + " " + description).lower()
@@ -235,7 +228,6 @@ async def scrape_linkedin_jobs(query="software engineer", location="India", targ
 
                     print(f"[{collected + 1}] {title} | {company} | {location} | {job_url}")
 
-                    # if await is_semantically_relevant(title, target_titles):
                     if True:
                         job_page = await context.new_page()
                         await job_page.goto(f"https://www.linkedin.com{job_url}" if job_url.startswith("/") else job_url)
